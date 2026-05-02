@@ -1083,6 +1083,37 @@
               {/if}
             </button>
           </div>
+        {:else if item.id === "lockView"}
+          <!-- Lock View -->
+          <div class="w-full flex justify-center {sidebarExpanded ? 'px-2' : ''}">
+            <button
+              title={`Toggle Field View Lock${getShortcutFromSettings(settings, "toggle-lock-view")}`}
+              aria-label="Toggle Field View Lock"
+              aria-pressed={settings.lockFieldView}
+              onclick={() => {
+                settingsStore.update((s) => ({
+                  ...s,
+                  lockFieldView: !s.lockFieldView,
+                }));
+              }}
+              class="p-1.5 rounded-md transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 flex items-center {sidebarExpanded
+                ? 'w-[calc(100%-1.1rem)] px-3'
+                : 'justify-center'} {settings.lockFieldView
+                ? 'text-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                : 'text-neutral-500 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-800'}"
+            >
+              <div class="sidebar-icon flex-none flex items-center justify-center">
+                {#if settings.lockFieldView}
+                  <LockIcon className="sidebar-icon-small flex-none" />
+                {:else}
+                  <UnlockIcon className="sidebar-icon-small flex-none" />
+                {/if}
+              </div>
+              {#if sidebarExpanded}
+                <span class="ml-3 text-sm font-medium truncate">{item.label}</span>
+              {/if}
+            </button>
+          </div>
         {:else if item.id === "newPath"}
           <!-- New Path -->
           <div

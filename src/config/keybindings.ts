@@ -398,6 +398,13 @@ export const DEFAULT_KEY_BINDINGS: KeyBinding[] = [
     category: "View",
   },
   {
+    id: "toggle-lock-view",
+    key: "alt+l",
+    description: "Toggle field view lock",
+    action: "toggleLockFieldView",
+    category: "View",
+  },
+  {
     id: "toggle-collapse-all",
     key: "shift+c",
     description: "Toggle collapse/expand all",
