@@ -59,7 +59,13 @@ export function shouldBlockShortcut(
     actionId === "increase-val" ||
     actionId === "decrease-val" ||
     actionId === "increase-val-small" ||
-    actionId === "decrease-val-small"
+    actionId === "decrease-val-small" ||
+    actionId === "move-point-up" ||
+    actionId === "move-point-down" ||
+    actionId === "move-point-left" ||
+    actionId === "move-point-right" ||
+    actionId === "move-item-up" ||
+    actionId === "move-item-down"
   )
     return false;
   if (e.key === "Escape") return false;
