@@ -17,6 +17,8 @@ import {
   GridIcon,
   OnionSkinIcon,
   VelocityHeatmapIcon,
+  LockIcon,
+  UnlockIcon,
   FeedbackIcon,
   GithubIcon,
   ShowRobotIcon,
@@ -133,6 +135,13 @@ export const SIDEBAR_ITEMS: SidebarItemConfig[] = [
     label: "Velocity Heatmap",
     type: "system",
     iconComponent: VelocityHeatmapIcon,
+  },
+  {
+    id: "lockView",
+    label: "Lock Field View",
+    type: "system",
+    shortcutKey: "toggle-lock-view",
+    iconComponent: LockIcon,
   },
   {
     id: "newPath",
