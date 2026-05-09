@@ -15,6 +15,9 @@
     <a href="https://github.com/Mallen220/TurtleTracer/releases">
       <img src="https://img.shields.io/github/v/release/Mallen220/TurtleTracer?style=for-the-badge&color=007AFF" alt="Latest Release" height="28">
     </a>
+    <a href="https://github.com/Mallen220/TurtleTracer/releases">
+      <img src="https://img.shields.io/github/downloads/Mallen220/TurtleTracer/total?style=for-the-badge&color=4c1" alt="Total Downloads" height="28">
+    </a>
     <a href="LICENSE">
       <img src="README_Content/Modified-License-Apache_2.0.svg" alt="License" height="28">
     </a>
