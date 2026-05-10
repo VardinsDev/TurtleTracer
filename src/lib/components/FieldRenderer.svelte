@@ -177,7 +177,7 @@
   let isBoxSelecting = false;
   let boxSelectStart: { x: number; y: number } | null = null;
   let boxSelectCurrent: { x: number; y: number } | null = null;
-  let boxSelectElement: InstanceType<typeof Two.Path> | null = null;
+  let boxSelectElement: InstanceType<typeof Two.Rectangle> | null = null;
 
   let drawPoints: { x: number; y: number }[] = [];
   let drawPathElement: InstanceType<typeof Two.Path> | null = null;
@@ -563,21 +563,19 @@
           const minY = Math.min(boxSelectStart.y, boxSelectCurrent.y);
           const maxY = Math.max(boxSelectStart.y, boxSelectCurrent.y);
 
-          // Update rectangle vertices
-          // Using Anchor because Two.Path uses Anchor objects for vertices
-          const p1x = x(minX);
-          const p1y = y(minY);
-          const p2x = x(maxX);
-          const p2y = y(minY);
-          const p3x = x(maxX);
-          const p3y = y(maxY);
-          const p4x = x(minX);
-          const p4y = y(maxY);
+          const px1 = x(minX);
+          const py1 = y(minY);
+          const px2 = x(maxX);
+          const py2 = y(maxY);
 
-          boxSelectElement.vertices[0].set(p1x, p1y);
-          boxSelectElement.vertices[1].set(p2x, p2y);
-          boxSelectElement.vertices[2].set(p3x, p3y);
-          boxSelectElement.vertices[3].set(p4x, p4y);
+          const width = px2 - px1;
+          const height = py2 - py1;
+          const centerX = px1 + width / 2;
+          const centerY = py1 + height / 2;
+
+          boxSelectElement.translation.set(centerX, centerY);
+          (boxSelectElement as any).width = width;
+          (boxSelectElement as any).height = height;
 
           two!.update();
         } else if (isDown && currentElem) {
@@ -1271,18 +1269,8 @@
 
             if (boxSelectElement) boxSelectElement.remove();
 
-            // Create a path for the box
-            boxSelectElement = two!.makePath(
-              x(inchX),
-              y(inchY),
-              x(inchX),
-              y(inchY),
-              x(inchX),
-              y(inchY),
-              x(inchX),
-              y(inchY),
-              true as any,
-            );
+            // Create a rectangle for the box
+            boxSelectElement = new Two.Rectangle(x(inchX), y(inchY), 0, 0);
             boxSelectElement.fill = "rgba(59, 130, 246, 0.2)"; // blue-500 with opacity
             boxSelectElement.stroke = "#3b82f6";
             boxSelectElement.linewidth = 1;
