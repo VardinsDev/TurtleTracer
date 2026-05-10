@@ -195,6 +195,87 @@
 
   // Follow Robot Logic (Loop for playback)
   let followLoopId: number;
+  function isPointInBox(
+    px: number,
+    py: number,
+    minX: number,
+    maxX: number,
+    minY: number,
+    maxY: number,
+  ) {
+    return px >= minX && px <= maxX && py >= minY && py <= maxY;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function handleBoxSelectionComplete(
+    minX: number,
+    maxX: number,
+    minY: number,
+    maxY: number,
+  ) {
+    const newSelections: string[] = [];
+
+    if (isPointInBox(startPoint.x, startPoint.y, minX, maxX, minY, maxY)) {
+      newSelections.push("point-0-0");
+    }
+
+    lines.forEach((line, lIdx) => {
+      if (
+        isPointInBox(line.endPoint.x, line.endPoint.y, minX, maxX, minY, maxY)
+      ) {
+        newSelections.push(`point-${lIdx + 1}-0`);
+      }
+      line.controlPoints.forEach((cp, cpIdx) => {
+        if (isPointInBox(cp.x, cp.y, minX, maxX, minY, maxY)) {
+          newSelections.push(`point-${lIdx + 1}-${cpIdx + 1}`);
+        }
+      });
+      if (line.eventMarkers) {
+        line.eventMarkers.forEach((em, eIdx) => {
+          if (
+            em.type === "pose" &&
+            em.poseX !== undefined &&
+            em.poseY !== undefined
+          ) {
+            if (isPointInBox(em.poseX, em.poseY, minX, maxX, minY, maxY)) {
+              newSelections.push(`event-${lIdx}-${eIdx}`);
+            }
+          }
+        });
+      }
+    });
+
+    shapes.forEach((shape, sIdx) => {
+      if (shape.vertices) {
+        shape.vertices.forEach((v, vIdx) => {
+          if (isPointInBox(v.x, v.y, minX, maxX, minY, maxY)) {
+            newSelections.push(`obstacle-${sIdx}-${vIdx}`);
+          }
+        });
+      }
+    });
+
+    if (newSelections.length > 0) {
+      multiSelectedPointIds.update((ids) => {
+        const set = new Set([...ids, ...newSelections]);
+        return Array.from(set);
+      });
+
+      const firstLineId = newSelections.find((s) => s.startsWith("point-"));
+      if (firstLineId && firstLineId !== "point-0-0") {
+        const parts = firstLineId.split("-");
+        const lIdx = Number(parts[1]) - 1;
+        if (lines[lIdx]) selectedLineId.set(lines[lIdx].id as string);
+      }
+
+      notification.set({
+        message: `Selected ${newSelections.length} items`,
+        type: "info",
+        timeout: 1500,
+      });
+    }
+  }
+
   function followLoop() {
     if ($followRobotStore && $playingStore && robotXY) {
       panToField(robotXY.x, robotXY.y);
@@ -1544,96 +1625,7 @@
 
           // We only want to select if the box has some area to prevent accidental tiny selections
           if (maxX - minX > 0.5 || maxY - minY > 0.5) {
-            const newSelections: string[] = [];
-
-            // Check start point
-            if (
-              startPoint.x >= minX &&
-              startPoint.x <= maxX &&
-              startPoint.y >= minY &&
-              startPoint.y <= maxY
-            ) {
-              newSelections.push("point-0-0");
-            }
-
-            // Check paths
-            lines.forEach((line, lIdx) => {
-              if (
-                line.endPoint.x >= minX &&
-                line.endPoint.x <= maxX &&
-                line.endPoint.y >= minY &&
-                line.endPoint.y <= maxY
-              ) {
-                newSelections.push(`point-${lIdx + 1}-0`);
-              }
-              line.controlPoints.forEach((cp, cpIdx) => {
-                if (
-                  cp.x >= minX &&
-                  cp.x <= maxX &&
-                  cp.y >= minY &&
-                  cp.y <= maxY
-                ) {
-                  newSelections.push(`point-${lIdx + 1}-${cpIdx + 1}`);
-                }
-              });
-              if (line.eventMarkers) {
-                line.eventMarkers.forEach((em, eIdx) => {
-                  if (
-                    em.type === "pose" &&
-                    em.poseX !== undefined &&
-                    em.poseY !== undefined
-                  ) {
-                    if (
-                      em.poseX >= minX &&
-                      em.poseX <= maxX &&
-                      em.poseY >= minY &&
-                      em.poseY <= maxY
-                    ) {
-                      newSelections.push(`event-${lIdx}-${eIdx}`);
-                    }
-                  }
-                });
-              }
-            });
-
-            // Check obstacles
-            shapes.forEach((shape, sIdx) => {
-              if (shape.vertices) {
-                shape.vertices.forEach((v, vIdx) => {
-                  if (
-                    v.x >= minX &&
-                    v.x <= maxX &&
-                    v.y >= minY &&
-                    v.y <= maxY
-                  ) {
-                    newSelections.push(`obstacle-${sIdx}-${vIdx}`);
-                  }
-                });
-              }
-            });
-
-            if (newSelections.length > 0) {
-              multiSelectedPointIds.update((ids) => {
-                const set = new Set([...ids, ...newSelections]);
-                return Array.from(set);
-              });
-
-              // Set selectedLineId if we selected path points, to keep UI consistent
-              const firstLineId = newSelections.find((s) =>
-                s.startsWith("point-"),
-              );
-              if (firstLineId && firstLineId !== "point-0-0") {
-                const parts = firstLineId.split("-");
-                const lIdx = Number(parts[1]) - 1;
-                if (lines[lIdx]) selectedLineId.set(lines[lIdx].id as string);
-              }
-
-              notification.set({
-                message: `Selected ${newSelections.length} items`,
-                type: "info",
-                timeout: 1500,
-              });
-            }
+            handleBoxSelectionComplete(minX, maxX, minY, maxY);
           }
         }
         boxSelectStart = null;
