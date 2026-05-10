@@ -2,16 +2,10 @@
 <script lang="ts">
   interface Props {
     className?: string;
-    strokeWidth?: number;
   }
-  let { className = "w-0.5 h-1", strokeWidth = 2 }: Props = $props();
+  let { className = "" }: Props = $props();
 </script>
 
-<svg
-  xmlns="http://www.w3.org/2000/svg"
-  viewBox="0 0 2 4"
-  fill="currentColor"
-  class="inline-block {className}"
->
-  <circle cx="1" cy="2" r="1" />
-</svg>
+<span class="inline-block select-none leading-none {className}" aria-hidden="true">
+  •
+</span>
