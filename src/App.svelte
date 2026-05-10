@@ -1104,9 +1104,6 @@
     previewOptimizedLines = newLines;
   }
 
-  function handleNavbarPreviewChange(e: CustomEvent) {
-    previewOptimizedLines = e.detail;
-  }
 
   function stepForward() {
     const p = Math.min(100, percent + 1);
@@ -1897,7 +1894,6 @@
         {canUndo}
         {canRedo}
         {history}
-        on:previewOptimizedLines={handleNavbarPreviewChange}
       />
     </div>
   {/if}
