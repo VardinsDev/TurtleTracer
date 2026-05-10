@@ -218,10 +218,36 @@
   ) {
     if (!line.eventMarkers) return;
     line.eventMarkers.forEach((em: any, eIdx: number) => {
-      if (em.type === "pose" && em.poseX !== undefined && em.poseY !== undefined) {
+      if (
+        em.type === "pose" &&
+        em.poseX !== undefined &&
+        em.poseY !== undefined
+      ) {
         if (isPointInBox(em.poseX, em.poseY, minX, maxX, minY, maxY)) {
           newSelections.push(`event-${lIdx}-${eIdx}`);
         }
+      }
+    });
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function getLinePoints(
+    line: any,
+    lIdx: number,
+    minX: number,
+    maxX: number,
+    minY: number,
+    maxY: number,
+    newSelections: string[],
+  ) {
+    if (
+      isPointInBox(line.endPoint.x, line.endPoint.y, minX, maxX, minY, maxY)
+    ) {
+      newSelections.push(`point-${lIdx + 1}-0`);
+    }
+    line.controlPoints.forEach((cp: any, cpIdx: number) => {
+      if (isPointInBox(cp.x, cp.y, minX, maxX, minY, maxY)) {
+        newSelections.push(`point-${lIdx + 1}-${cpIdx + 1}`);
       }
     });
   }
@@ -234,15 +260,16 @@
     newSelections: string[],
   ) {
     lines.forEach((line, lIdx) => {
-      if (isPointInBox(line.endPoint.x, line.endPoint.y, minX, maxX, minY, maxY)) {
-        newSelections.push(`point-${lIdx + 1}-0`);
-      }
-      line.controlPoints.forEach((cp, cpIdx) => {
-        if (isPointInBox(cp.x, cp.y, minX, maxX, minY, maxY)) {
-          newSelections.push(`point-${lIdx + 1}-${cpIdx + 1}`);
-        }
-      });
-      checkEventMarkerSelections(line, lIdx, minX, maxX, minY, maxY, newSelections);
+      getLinePoints(line, lIdx, minX, maxX, minY, maxY, newSelections);
+      checkEventMarkerSelections(
+        line,
+        lIdx,
+        minX,
+        maxX,
+        minY,
+        maxY,
+        newSelections,
+      );
     });
   }
 
