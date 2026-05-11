@@ -172,6 +172,13 @@
   let isDown = false;
   let isPanning = false;
   let isDrawing = false;
+
+  // Box Selection State
+  let isBoxSelecting = false;
+  let boxSelectStart: { x: number; y: number } | null = null;
+  let boxSelectCurrent: { x: number; y: number } | null = null;
+  let boxSelectElement: InstanceType<typeof Two.Rectangle> | null = null;
+
   let drawPoints: { x: number; y: number }[] = [];
   let drawPathElement: InstanceType<typeof Two.Path> | null = null;
   let multiDragOffsets = new Map<string, { x: number; y: number }>();
@@ -188,6 +195,138 @@
 
   // Follow Robot Logic (Loop for playback)
   let followLoopId: number;
+  function isPointInBox(
+    px: number,
+    py: number,
+    minX: number,
+    maxX: number,
+    minY: number,
+    maxY: number,
+  ) {
+    return px >= minX && px <= maxX && py >= minY && py <= maxY;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function checkEventMarkerSelections(
+    line: any,
+    lIdx: number,
+    minX: number,
+    maxX: number,
+    minY: number,
+    maxY: number,
+    newSelections: string[],
+  ) {
+    if (!line.eventMarkers) return;
+    line.eventMarkers.forEach((em: any, eIdx: number) => {
+      if (
+        em.type === "pose" &&
+        em.poseX !== undefined &&
+        em.poseY !== undefined
+      ) {
+        if (isPointInBox(em.poseX, em.poseY, minX, maxX, minY, maxY)) {
+          newSelections.push(`event-${lIdx}-${eIdx}`);
+        }
+      }
+    });
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function getLinePoints(
+    line: any,
+    lIdx: number,
+    minX: number,
+    maxX: number,
+    minY: number,
+    maxY: number,
+    newSelections: string[],
+  ) {
+    if (
+      isPointInBox(line.endPoint.x, line.endPoint.y, minX, maxX, minY, maxY)
+    ) {
+      newSelections.push(`point-${lIdx + 1}-0`);
+    }
+    line.controlPoints.forEach((cp: any, cpIdx: number) => {
+      if (isPointInBox(cp.x, cp.y, minX, maxX, minY, maxY)) {
+        newSelections.push(`point-${lIdx + 1}-${cpIdx + 1}`);
+      }
+    });
+  }
+
+  function checkLineSelections(
+    minX: number,
+    maxX: number,
+    minY: number,
+    maxY: number,
+    newSelections: string[],
+  ) {
+    lines.forEach((line, lIdx) => {
+      getLinePoints(line, lIdx, minX, maxX, minY, maxY, newSelections);
+      checkEventMarkerSelections(
+        line,
+        lIdx,
+        minX,
+        maxX,
+        minY,
+        maxY,
+        newSelections,
+      );
+    });
+  }
+
+  function checkObstacleSelections(
+    minX: number,
+    maxX: number,
+    minY: number,
+    maxY: number,
+    newSelections: string[],
+  ) {
+    shapes.forEach((shape, sIdx) => {
+      if (!shape.vertices) return;
+      shape.vertices.forEach((v, vIdx) => {
+        if (isPointInBox(v.x, v.y, minX, maxX, minY, maxY)) {
+          newSelections.push(`obstacle-${sIdx}-${vIdx}`);
+        }
+      });
+    });
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function handleBoxSelectionComplete(
+    minX: number,
+    maxX: number,
+    minY: number,
+    maxY: number,
+  ) {
+    const newSelections: string[] = [];
+
+    if (isPointInBox(startPoint.x, startPoint.y, minX, maxX, minY, maxY)) {
+      newSelections.push("point-0-0");
+    }
+
+    checkLineSelections(minX, maxX, minY, maxY, newSelections);
+    checkObstacleSelections(minX, maxX, minY, maxY, newSelections);
+
+    if (newSelections.length > 0) {
+      multiSelectedPointIds.update((ids) => {
+        const set = new Set([...ids, ...newSelections]);
+        return Array.from(set);
+      });
+
+      const firstLineId = newSelections.find((s) => s.startsWith("point-"));
+      if (firstLineId && firstLineId !== "point-0-0") {
+        const parts = firstLineId.split("-");
+        const lIdx = Number(parts[1]) - 1;
+        if (lines[lIdx]) selectedLineId.set(lines[lIdx].id as string);
+      }
+
+      notification.set({
+        message: `Selected ${newSelections.length} items`,
+        type: "info",
+        timeout: 1500,
+      });
+    }
+  }
+
   function followLoop() {
     if ($followRobotStore && $playingStore && robotXY) {
       panToField(robotXY.x, robotXY.y);
@@ -467,7 +606,30 @@
         // Cursor and Dragging Logic
         // Optimization: Don't use elementFromPoint here. It forces a reflow.
 
-        if (isDown && currentElem) {
+        if (isBoxSelecting && boxSelectStart && boxSelectElement) {
+          boxSelectCurrent = { x: rawInchXForDisplay, y: rawInchYForDisplay };
+
+          const minX = Math.min(boxSelectStart.x, boxSelectCurrent.x);
+          const maxX = Math.max(boxSelectStart.x, boxSelectCurrent.x);
+          const minY = Math.min(boxSelectStart.y, boxSelectCurrent.y);
+          const maxY = Math.max(boxSelectStart.y, boxSelectCurrent.y);
+
+          const px1 = x(minX);
+          const py1 = y(minY);
+          const px2 = x(maxX);
+          const py2 = y(maxY);
+
+          const width = px2 - px1;
+          const height = py2 - py1;
+          const centerX = px1 + width / 2;
+          const centerY = py1 + height / 2;
+
+          boxSelectElement.translation.set(centerX, centerY);
+          (boxSelectElement as any).width = width;
+          (boxSelectElement as any).height = height;
+
+          two!.update();
+        } else if (isDown && currentElem) {
           // Dragging Logic
 
           let linesChanged = false;
@@ -1137,11 +1299,41 @@
           }
         }
 
-        if (!clickedElem && !evt.shiftKey && !evt.ctrlKey && !evt.metaKey) {
-          selectedPointId.set(null);
-          selectedLineId.set(null);
-          multiSelectedPointIds.set([]);
-          multiSelectedLineIds.set([]);
+        if (!clickedElem) {
+          if (evt.shiftKey) {
+            // Start Box Selection
+            isBoxSelecting = true;
+
+            const rectForMouse =
+              two!.renderer.domElement.getBoundingClientRect();
+            const transformedForMouse = getTransformedCoordinates(
+              evt.clientX,
+              evt.clientY,
+              rectForMouse,
+              settings.fieldRotation || 0,
+            );
+            let inchX = x.invert(transformedForMouse.x);
+            let inchY = y.invert(transformedForMouse.y);
+
+            boxSelectStart = { x: inchX, y: inchY };
+            boxSelectCurrent = { x: inchX, y: inchY };
+
+            if (boxSelectElement) boxSelectElement.remove();
+
+            // Create a rectangle for the box
+            boxSelectElement = new Two.Rectangle(x(inchX), y(inchY), 0, 0);
+            boxSelectElement.fill = "rgba(59, 130, 246, 0.2)"; // blue-500 with opacity
+            boxSelectElement.stroke = "#3b82f6";
+            boxSelectElement.linewidth = 1;
+            two!.add(boxSelectElement);
+            two!.update();
+            return;
+          } else if (!evt.ctrlKey && !evt.metaKey) {
+            selectedPointId.set(null);
+            selectedLineId.set(null);
+            multiSelectedPointIds.set([]);
+            multiSelectedLineIds.set([]);
+          }
         }
 
         if (clickedElem) {
@@ -1456,6 +1648,30 @@
 
     two!.renderer.domElement.addEventListener("mouseup", () => {
       snapGuides = [];
+      if (isBoxSelecting) {
+        isBoxSelecting = false;
+        if (boxSelectElement) {
+          boxSelectElement.remove();
+          boxSelectElement = null;
+          two!.update();
+        }
+
+        if (boxSelectStart && boxSelectCurrent) {
+          const minX = Math.min(boxSelectStart.x, boxSelectCurrent.x);
+          const maxX = Math.max(boxSelectStart.x, boxSelectCurrent.x);
+          const minY = Math.min(boxSelectStart.y, boxSelectCurrent.y);
+          const maxY = Math.max(boxSelectStart.y, boxSelectCurrent.y);
+
+          // We only want to select if the box has some area to prevent accidental tiny selections
+          if (maxX - minX > 0.5 || maxY - minY > 0.5) {
+            handleBoxSelectionComplete(minX, maxX, minY, maxY);
+          }
+        }
+        boxSelectStart = null;
+        boxSelectCurrent = null;
+        return;
+      }
+
       if ($isDrawingMode && isDrawing) {
         isDrawing = false;
         if (drawPathElement) {
