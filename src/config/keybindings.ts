@@ -1084,7 +1084,7 @@ export const DEFAULT_KEY_BINDINGS: KeyBinding[] = [
   },
   {
     id: "toggle-velocity-tooltip",
-    key: "alt+v", // Might conflict, let's just leave key empty to have it in command palette only
+    key: "",
     description: "Toggle Velocity Tooltip",
     action: "toggleVelocityTooltip",
     category: "View",
