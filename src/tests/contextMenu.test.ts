@@ -34,45 +34,49 @@ describe("ContextMenu", () => {
   });
 
   it("updates position correctly when going off screen", async () => {
-    const { rerender } = render(ContextMenu as any, {
-      x: 900,
-      y: 900,
-      items: [{ label: "Item 1" }],
-    });
-
-    const menuNode = screen.getByRole("menu");
-    menuNode.getBoundingClientRect = vi.fn(
-      () =>
-        ({
-          width: 200,
-          height: 200,
-          top: 0,
-          left: 0,
-          right: 200,
-          bottom: 200,
-          x: 0,
-          y: 0,
-          toJSON: () => {},
-        }) as any,
+    const { testMenuOffScreenPositioning } = await import("./testUtils");
+    await testMenuOffScreenPositioning(
+      { x: 900, y: 900, items: [{ label: "Item 1" }] },
+      { x: 100, y: 100, items: [{ label: "Item 1 Updated" }] },
+      tick,
+      screen,
+      expect,
+      (props: any) => render(ContextMenu as any, props),
     );
-
-    // Let effect run
-    await tick();
-    await tick();
-
-    expect(menuNode.style.left).toBe("700px");
-    expect(menuNode.style.top).toBe("700px");
-
-    await rerender({
-      x: 100,
-      y: 100,
-      items: [{ label: "Item 1 Updated" }],
-    });
-
-    await tick();
-    await tick();
-
-    expect(menuNode.style.left).toBe("100px");
-    expect(menuNode.style.top).toBe("100px");
   });
+
+  const menuNode = screen.getByRole("menu");
+  menuNode.getBoundingClientRect = vi.fn(
+    () =>
+      ({
+        width: 200,
+        height: 200,
+        top: 0,
+        left: 0,
+        right: 200,
+        bottom: 200,
+        x: 0,
+        y: 0,
+        toJSON: () => {},
+      }) as any,
+  );
+
+  // Let effect run
+  await tick();
+  await tick();
+
+  expect(menuNode.style.left).toBe("700px");
+  expect(menuNode.style.top).toBe("700px");
+
+  await rerender({
+    x: 100,
+    y: 100,
+    items: [{ label: "Item 1 Updated" }],
+  });
+
+  await tick();
+  await tick();
+
+  expect(menuNode.style.left).toBe("100px");
+  expect(menuNode.style.top).toBe("100px");
 });

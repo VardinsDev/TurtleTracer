@@ -39,47 +39,50 @@ describe("FileContextMenu", () => {
   });
 
   it("updates position correctly when going off screen", async () => {
-    const { rerender } = render(FileContextMenu as any, {
-      x: 900,
-      y: 900,
-      fileName: "file1.txt",
-      isDirectory: false,
-    });
-
-    const menuNode = screen.getByRole("menu");
-    menuNode.getBoundingClientRect = vi.fn(
-      () =>
-        ({
-          width: 200,
-          height: 200,
-          top: 0,
-          left: 0,
-          right: 200,
-          bottom: 200,
-          x: 0,
-          y: 0,
-          toJSON: () => {},
-        }) as any,
+    const { testMenuOffScreenPositioning } = await import("./testUtils");
+    await testMenuOffScreenPositioning(
+      { x: 900, y: 900, fileName: "file1.txt", isDirectory: false },
+      { x: 100, y: 100, fileName: "file1.txt", isDirectory: false },
+      tick,
+      screen,
+      expect,
+      (props: any) => render(FileContextMenu as any, props),
     );
-
-    // Let effect run
-    await tick();
-    await tick();
-
-    expect(menuNode.style.left).toBe("700px");
-    expect(menuNode.style.top).toBe("700px");
-
-    await rerender({
-      x: 100,
-      y: 100,
-      fileName: "file1.txt",
-      isDirectory: false,
-    });
-
-    await tick();
-    await tick();
-
-    expect(menuNode.style.left).toBe("100px");
-    expect(menuNode.style.top).toBe("100px");
   });
+
+  const menuNode = screen.getByRole("menu");
+  menuNode.getBoundingClientRect = vi.fn(
+    () =>
+      ({
+        width: 200,
+        height: 200,
+        top: 0,
+        left: 0,
+        right: 200,
+        bottom: 200,
+        x: 0,
+        y: 0,
+        toJSON: () => {},
+      }) as any,
+  );
+
+  // Let effect run
+  await tick();
+  await tick();
+
+  expect(menuNode.style.left).toBe("700px");
+  expect(menuNode.style.top).toBe("700px");
+
+  await rerender({
+    x: 100,
+    y: 100,
+    fileName: "file1.txt",
+    isDirectory: false,
+  });
+
+  await tick();
+  await tick();
+
+  expect(menuNode.style.left).toBe("100px");
+  expect(menuNode.style.top).toBe("100px");
 });
