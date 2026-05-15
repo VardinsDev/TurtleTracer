@@ -420,6 +420,15 @@
           <span>🥔</span> Use Potato Robot
         </button>
         <button
+          onclick={() => {
+            settings.robotImage = "turtle";
+            settings = { ...settings };
+          }}
+          class="px-3 py-1.5 text-xs bg-green-600 hover:bg-green-700 text-white rounded-md transition-colors"
+        >
+          🐢 Use Turtle Robot
+        </button>
+        <button
           onclick={() => document.getElementById("robot-image-input")?.click()}
           class="px-3 py-1.5 text-xs bg-blue-500 hover:bg-blue-600 text-white rounded-md transition-colors"
         >
