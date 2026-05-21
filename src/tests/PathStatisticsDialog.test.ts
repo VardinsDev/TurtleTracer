@@ -76,7 +76,7 @@ describe("PathStatisticsDialog", () => {
 
   it("shows acceleration graphs and insights tab", async () => {
     const { getByText, getAllByText } = renderDialog({
-      settings: { ...defaultSettings, kFriction: 0.5 }
+      settings: { ...defaultSettings, kFriction: 0.5 },
     });
 
     // Check Graphs

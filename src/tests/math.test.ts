@@ -169,34 +169,40 @@ describe("Math Utils", () => {
     });
   });
 
-  const createTestLine = (heading, extras = {}) => ({
+  type HeadingFunction = (
+    line: Line | undefined,
+    previousPoint: Point,
+    globalOverride?: Line,
+    totalChainDistance?: number,
+    distanceBefore?: number,
+  ) => number;
+
+  const createTestLine = (
+    heading: Point["heading"],
+    extras: Partial<Point> = {},
+  ) => ({
     endPoint: { x: 10, y: 10, heading, ...extras },
   });
 
-  const testUndefinedHandling = (fn) => {
+  const testUndefinedHandling = (fn: HeadingFunction) => {
     const p = { x: 0, y: 0, heading: "constant", degrees: 0 } as Point;
     expect(fn(undefined, p)).toBe(0);
-    expect(
-      fn(
-        { endPoint: undefined as unknown as Point } as Line,
-        p,
-      ),
-    ).toBe(0);
+    expect(fn({ endPoint: undefined as unknown as Point } as Line, p)).toBe(0);
   };
 
-  const testTangentialHeading = (fn) => {
+  const testTangentialHeading = (fn: HeadingFunction) => {
     const prev = { x: 0, y: 0, heading: "constant", degrees: 0 } as Point;
     const line = createTestLine("tangential", { reverse: false }) as Line;
     expect(fn(line, prev)).toBe(45);
   };
 
-  const testReversedTangentialHeading = (fn) => {
+  const testReversedTangentialHeading = (fn: HeadingFunction) => {
     const prev = { x: 0, y: 0, heading: "constant", degrees: 0 } as Point;
     const line = createTestLine("tangential", { reverse: true }) as Line;
     expect(fn(line, prev)).toBe(-135);
   };
 
-  const testPiecewiseLinearHeading = (fn) => {
+  const testPiecewiseLinearHeading = (fn: HeadingFunction) => {
     const p1 = { x: 0, y: 0 } as Point;
     const globalOverride = {
       id: "root-line",
@@ -223,8 +229,6 @@ describe("Math Utils", () => {
     expect(res).toBe(90);
   };
 
-
-
   describe("getLineStartHeading", () => {
     it("returns 0 if line or endpoint is undefined", () => {
       testUndefinedHandling(getLineStartHeading);
@@ -238,7 +242,10 @@ describe("Math Utils", () => {
 
     it("returns startDeg for linear heading", () => {
       const prev = { x: 0, y: 0, heading: "constant", degrees: 0 } as Point;
-      const line = createTestLine("linear", { startDeg: 30, endDeg: 60 }) as Line;
+      const line = createTestLine("linear", {
+        startDeg: 30,
+        endDeg: 60,
+      }) as Line;
       expect(getLineStartHeading(line, prev)).toBe(30);
     });
 
@@ -254,7 +261,7 @@ describe("Math Utils", () => {
       const prev = { x: 0, y: 0, heading: "constant", degrees: 0 } as Point;
       const line = {
         controlPoints: [{ x: 5, y: 0 }],
-        ...createTestLine("tangential", { reverse: false })
+        ...createTestLine("tangential", { reverse: false }),
       } as Line;
       // Angle from (0,0) to first CP (5,0) is 0 degrees
       expect(getLineStartHeading(line, prev)).toBe(0);
@@ -267,7 +274,7 @@ describe("Math Utils", () => {
           { x: 0, y: 0 }, // Overlaps with prev
           { x: 5, y: 5 },
         ],
-        ...createTestLine("tangential", { reverse: false })
+        ...createTestLine("tangential", { reverse: false }),
       } as Line;
       // Should skip (0,0) and use (5,5), angle 45
       expect(getLineStartHeading(line, prev)).toBe(45);
@@ -367,7 +374,10 @@ describe("Math Utils", () => {
 
     it("returns endDeg for linear heading", () => {
       const prev = { x: 0, y: 0, heading: "constant", degrees: 0 } as Point;
-      const line = createTestLine("linear", { startDeg: 30, endDeg: 60 }) as Line;
+      const line = createTestLine("linear", {
+        startDeg: 30,
+        endDeg: 60,
+      }) as Line;
       expect(getLineEndHeading(line, prev)).toBe(60);
     });
 
@@ -385,7 +395,7 @@ describe("Math Utils", () => {
         controlPoints: [
           { x: 5, y: 10 }, // Last CP is (5,10)
         ],
-        ...createTestLine("tangential", { reverse: false })
+        ...createTestLine("tangential", { reverse: false }),
       } as Line;
       // Angle from CP (5,10) to End (10,10) is 0 degrees
       expect(getLineEndHeading(line, prev)).toBe(0);
@@ -398,7 +408,7 @@ describe("Math Utils", () => {
           { x: 5, y: 5 },
           { x: 10, y: 10 }, // Overlaps with end
         ],
-        ...createTestLine("tangential", { reverse: false })
+        ...createTestLine("tangential", { reverse: false }),
       } as Line;
       // Should skip (10,10) and use (5,5) as prev point for tangent
       // Tangent from (5,5) to (10,10) is 45 degrees
