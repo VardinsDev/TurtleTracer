@@ -71,7 +71,7 @@ export function calculateDrivetrainSpeeds(
   const headingRad = (state1.heading * Math.PI) / 180;
 
   // Calculate normalized magnitudes based on typical robot speeds
-  const maxV = 60;
+  const maxV = settings.maxVelocity || 60;
   const maxOmega = 3;
 
   const normalizedForward = forwardVel / maxV;

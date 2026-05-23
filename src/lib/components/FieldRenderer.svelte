@@ -366,11 +366,18 @@
         (Math.abs(fl) + Math.abs(fr) + Math.abs(bl) + Math.abs(br)) / 4;
       const WIGGLE_SPEED = 25;
 
-      turtlePhases.fl += dt * Math.abs(fr) * WIGGLE_SPEED;
-      turtlePhases.fr += dt * Math.abs(fl) * WIGGLE_SPEED;
-      turtlePhases.bl += dt * Math.abs(br) * WIGGLE_SPEED * 1.3;
-      turtlePhases.br += dt * Math.abs(bl) * WIGGLE_SPEED * 1.3;
-      turtlePhases.tail += dt * total * WIGGLE_SPEED * 1.8;
+      // Cap the wiggling factors to 1.0 to enforce the maximum flapping cap
+      const factorFl = Math.min(1.0, Math.abs(fr));
+      const factorFr = Math.min(1.0, Math.abs(fl));
+      const factorBl = Math.min(1.0, Math.abs(br));
+      const factorBr = Math.min(1.0, Math.abs(bl));
+      const factorTail = Math.min(1.0, total);
+
+      turtlePhases.fl += dt * factorFl * WIGGLE_SPEED;
+      turtlePhases.fr += dt * factorFr * WIGGLE_SPEED;
+      turtlePhases.bl += dt * factorBl * WIGGLE_SPEED * 1.3;
+      turtlePhases.br += dt * factorBr * WIGGLE_SPEED * 1.3;
+      turtlePhases.tail += dt * factorTail * WIGGLE_SPEED * 1.8;
     }
 
     followLoopId = requestAnimationFrame(followLoop);
