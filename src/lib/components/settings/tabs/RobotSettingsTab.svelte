@@ -4,6 +4,7 @@
   import { DEFAULT_SETTINGS } from "../../../../config/defaults";
   import type { Settings } from "../../../../types/index";
   import RobotProfileManager from "../../settings/RobotProfileManager.svelte";
+  import RobotFeaturesEditor from "../RobotFeaturesEditor.svelte";
   import { notification } from "../../../../stores";
   import { CloseIcon, RobotPlaceholderIcon } from "../../icons";
 
@@ -302,6 +303,26 @@
       }}
       class="w-5 h-5 rounded border-neutral-300 dark:border-neutral-600 text-blue-500 focus:ring-2 focus:ring-blue-500 cursor-pointer"
     />
+  </SettingsItem>
+
+
+  <SettingsItem
+    label="Robot Features"
+    isModified={settings.robotFeatures !== undefined && settings.robotFeatures.length > 0}
+    onReset={() => {
+      settings.robotFeatures = [];
+      settings = { ...settings };
+    }}
+    description="Add custom shapes (intakes, trajectories, etc.) to your robot"
+    {searchQuery}
+    section
+  >
+    <div class="mt-2">
+      <RobotFeaturesEditor
+        {settings}
+        onSettingsChange={() => (settings = { ...settings })}
+      />
+    </div>
   </SettingsItem>
 
   <SettingsItem
