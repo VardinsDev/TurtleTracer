@@ -116,6 +116,7 @@
   } from "./utils/fileHandlers";
   import { splitPathAtPercent } from "./utils/pathEditing";
   import { scanEventsInDirectory } from "./utils/eventScanner";
+  import { checkLibraryVersion } from "./utils/libraryVersionChecker";
   import { PluginManager } from "./lib/pluginManager";
   import { isBrowser } from "./utils/platform";
   import { themesStore } from "./lib/pluginsStore";
@@ -280,10 +281,21 @@
 
   // Automatically refresh git status when directory or file changes
   let gitRefreshUnsub: () => void;
+  let libraryCheckUnsub: () => void;
   onMount(() => {
     gitRefreshUnsub = currentDirectoryStore.subscribe(() => {
       fetchGitStatus();
     });
+    
+    libraryCheckUnsub = currentDirectoryStore.subscribe((dir) => {
+      if (dir) {
+        checkLibraryVersion(dir, electronAPI, notification.set);
+      }
+    });
+
+    return () => {
+      if (libraryCheckUnsub) libraryCheckUnsub();
+    };
   });
 
   $effect(() => {
