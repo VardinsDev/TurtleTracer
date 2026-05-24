@@ -4,6 +4,7 @@
   import { DEFAULT_SETTINGS } from "../../../../config/defaults";
   import type { Settings } from "../../../../types/index";
   import RobotProfileManager from "../../settings/RobotProfileManager.svelte";
+  import RobotFeaturesEditor from "../RobotFeaturesEditor.svelte";
   import { notification } from "../../../../stores";
   import { CloseIcon, RobotPlaceholderIcon } from "../../icons";
 
@@ -502,6 +503,23 @@
           />
         </div>
       {/if}
+
+      <div
+        class="w-full mt-4 pt-4 border-t border-neutral-200 dark:border-neutral-700"
+      >
+        <p
+          class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1"
+        >
+          Robot Features
+        </p>
+        <p class="text-xs text-neutral-500 dark:text-neutral-400 mb-2">
+          Add custom shapes to represent intakes or scoring mechanisms.
+        </p>
+        <RobotFeaturesEditor
+          {settings}
+          onSettingsChange={() => (settings = { ...settings })}
+        />
+      </div>
     </div>
   </SettingsItem>
 

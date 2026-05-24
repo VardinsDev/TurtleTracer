@@ -56,6 +56,7 @@ export const DEFAULT_SETTINGS: Settings = {
   showRobotArrows: true,
   showFakeHeadingArrow: false,
   fakeHeadingArrowColor: "#ef4444",
+  robotFeatures: [],
   javaPackageName: "org.firstinspires.ftc.teamcode.Commands.AutoCommands",
   theme: "auto",
   programFontSize: 100,

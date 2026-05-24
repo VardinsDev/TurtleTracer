@@ -282,6 +282,7 @@ interface Settings {
   robotDriveType?: "holonomic" | "swerve"; // Drive train type for visualization
   showRobotArrows?: boolean; // Whether to display drive train direction arrows
   showFakeHeadingArrow?: boolean;
+  robotFeatures?: RobotFeature[];
   fakeHeadingArrowColor?: string;
   javaPackageName?: string;
   theme: "light" | "dark" | "auto" | string;
@@ -339,6 +340,23 @@ interface Settings {
   sidebarIconSize?: number;
 }
 
+interface RobotFeature {
+  id: string;
+  name?: string;
+  type: "rectangle" | "circle" | "line";
+  x: number;
+  y: number;
+  color: string;
+  width?: number;
+  height?: number;
+  radius?: number;
+  length?: number;
+  angle?: number;
+  thickness?: number;
+  filled?: boolean;
+  visible?: boolean;
+}
+
 interface RobotProfile {
   id: string;
   name: string;
@@ -357,6 +375,7 @@ interface RobotProfile {
   showRobotArrows?: boolean;
   showFakeHeadingArrow?: boolean;
   fakeHeadingArrowColor?: string;
+  robotFeatures?: RobotFeature[];
 }
 
 interface Shape {
