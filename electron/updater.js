@@ -1,4 +1,5 @@
 // Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
+// Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
 import { app, shell } from "electron";
 import * as fs from "node:fs";
 import * as path from "node:path";

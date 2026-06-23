@@ -435,7 +435,7 @@
                             : "0"}
                           max={$settingsStore.coordinateSystem === "FTC"
                             ? "72"
-                            : "144"}
+                            : "188"}
                           step={$snapToGrid && $showGrid ? $gridSize : 0.1}
                           title={snapToGridTitle}
                           class="pl-1.5 py-0.5 rounded bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 focus:outline-none focus:ring-1 focus:ring-purple-500 w-20 text-sm font-mono"
@@ -476,7 +476,7 @@
                             : "0"}
                           max={$settingsStore.coordinateSystem === "FTC"
                             ? "72"
-                            : "144"}
+                            : "188"}
                           step={$snapToGrid && $showGrid ? $gridSize : 0.1}
                           class="pl-1.5 py-0.5 rounded bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 focus:outline-none focus:ring-1 focus:ring-purple-500 w-20 text-sm font-mono"
                           title={snapToGridTitle}

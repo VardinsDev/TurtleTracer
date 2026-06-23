@@ -1,4 +1,5 @@
 // Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
+// Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
 /* eslint-env node */
 /* global process, console */
 import fs from "node:fs/promises";

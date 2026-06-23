@@ -1,4 +1,5 @@
 // Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
+// Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
 import { render, screen, fireEvent, waitFor } from "@testing-library/svelte";
 import ExportGifDialogWrapper from "./ExportGifDialogWrapper.svelte";
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";

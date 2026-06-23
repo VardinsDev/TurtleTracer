@@ -1,4 +1,5 @@
 // Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
+// Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
 import { render, fireEvent } from "@testing-library/svelte";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { Mock } from "vitest";

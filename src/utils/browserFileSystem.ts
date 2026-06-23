@@ -1,4 +1,5 @@
 // Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
+// Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
 import type { FileInfo } from "../types";
 import { DEFAULT_PROJECT_EXTENSION } from "./fileExtensions";
 

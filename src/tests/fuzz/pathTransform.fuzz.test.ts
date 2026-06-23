@@ -1,4 +1,5 @@
 // Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
+// Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
 import { describe, it, expect } from "vitest";
 import * as fc from "fast-check";
 import { mirrorPathData, reversePathData } from "../../utils/pathTransform";
@@ -6,7 +7,7 @@ import type { Point, Line, Shape, ControlPoint } from "../../types";
 
 // Generators
 const pointGenerator = fc.record({
-  x: fc.double({ min: -100, max: 244, noNaN: true }), // Field is 144, give some buffer
+  x: fc.double({ min: -100, max: 244, noNaN: true }), // Field is 188, give some buffer
   y: fc.double({ min: -100, max: 244, noNaN: true }),
   heading: fc.constantFrom("linear", "constant", "tangential"),
   // Include optional properties that might be present

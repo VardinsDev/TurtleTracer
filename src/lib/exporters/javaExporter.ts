@@ -1,4 +1,5 @@
 // Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
+// Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
 import prettier from "prettier";
 import prettierJavaPlugin from "prettier-plugin-java";
 import type { Point, Line, SequenceItem, TurtleData } from "../../types";
@@ -168,7 +169,7 @@ export async function generateJavaCode(
               headingConfig = "";
             }
           } else {
-            // Standard Pedro (0-144)
+            // Standard Pedro (0-188)
             const startPt = idx === 0 ? startPoint : lines[idx - 1].endPoint;
             const sx =
               codeUnits === "metric"

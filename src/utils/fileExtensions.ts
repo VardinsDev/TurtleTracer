@@ -1,4 +1,5 @@
 // Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
+// Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
 export const DEFAULT_PROJECT_EXTENSION = ".turt";
 export const LEGACY_PROJECT_EXTENSION = ".pp";
 export const SUPPORTED_PROJECT_EXTENSIONS = [

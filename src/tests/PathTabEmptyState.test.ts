@@ -1,4 +1,5 @@
 // Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
+// Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
 import { render, screen } from "@testing-library/svelte";
 import { vi, test, expect } from "vitest";
 import PathTab from "../lib/components/tabs/PathTab.svelte";

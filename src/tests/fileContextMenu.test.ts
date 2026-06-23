@@ -1,4 +1,5 @@
 // Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
+// Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
 import { describe, it, expect, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/svelte";
 import FileContextMenu from "../lib/components/filemanager/FileContextMenu.svelte";

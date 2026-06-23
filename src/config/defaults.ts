@@ -1,4 +1,5 @@
 // Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
+// Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
 import type { Point, Line, Shape, Settings } from "../types";
 import { getRandomColor } from "../utils";
 import { DEFAULT_KEY_BINDINGS } from "./keybindings";
@@ -14,7 +15,7 @@ export const DEFAULT_ROBOT_WIDTH = 16;
  */
 export const POINT_RADIUS = 1.15;
 export const LINE_WIDTH = 0.57;
-export const FIELD_SIZE = 144;
+export const FIELD_SIZE = 188;
 
 /**
  * Available field maps
@@ -133,8 +134,8 @@ export const DEFAULT_SETTINGS: Settings = {
           name: "Scoring 1",
           vertices: [
             { x: 48, y: 132 },
-            { x: 48, y: 144 },
-            { x: 24, y: 144 },
+            { x: 48, y: 188 },
+            { x: 24, y: 188 },
             { x: 24, y: 132 },
           ],
           color: "#1c1c1c",
@@ -145,8 +146,8 @@ export const DEFAULT_SETTINGS: Settings = {
           id: "cs-scoring-2",
           name: "Scoring 2",
           vertices: [
-            { x: 120, y: 144 },
-            { x: 96, y: 144 },
+            { x: 120, y: 188 },
+            { x: 96, y: 188 },
             { x: 96, y: 132 },
             { x: 120, y: 132 },
           ],

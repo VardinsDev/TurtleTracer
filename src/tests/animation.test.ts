@@ -1,4 +1,5 @@
 // Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
+// Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
 import { describe, it, expect } from "vitest";
 import {
   calculateRobotState,
@@ -9,8 +10,8 @@ import { scaleLinear } from "d3";
 import type { Line, TimelineEvent, Point } from "../types";
 
 describe("animation", () => {
-  const xScale = scaleLinear().domain([0, 144]).range([0, 1000]);
-  const yScale = scaleLinear().domain([0, 144]).range([0, 1000]);
+  const xScale = scaleLinear().domain([0, 188]).range([0, 1000]);
+  const yScale = scaleLinear().domain([0, 188]).range([0, 1000]);
   const startPoint: Point = { x: 0, y: 0, heading: "constant", degrees: 0 };
 
   const simpleLines: Line[] = [
