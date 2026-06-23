@@ -1,4 +1,5 @@
 // Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
+// Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
 export type SidebarItemType = "system" | "setting" | "separator" | "spacer";
 
 import type { Component } from "svelte";

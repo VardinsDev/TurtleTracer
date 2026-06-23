@@ -1,4 +1,5 @@
 // Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
+// Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
 import { describe, expect, it } from "vitest";
 import { replaceBetweenMarkers } from "../../scripts/update-lighthouse-readme-badges.js";
 

@@ -1,4 +1,5 @@
 // Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
+// Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
 import prettier from "prettier";
 import prettierJavaPlugin from "prettier-plugin-java";
 import type { Point, Line, SequenceItem, TurtleData } from "../../types";

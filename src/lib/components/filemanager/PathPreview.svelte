@@ -20,7 +20,7 @@
     fieldImage = null,
   }: Props = $props();
 
-  const FIELD_SIZE = 144;
+  const FIELD_SIZE = 188;
 
   // Use a uniform scale based on the minimum dimension so the field preview
   // keeps its aspect and is not stretched. Center the scaled field inside the

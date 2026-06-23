@@ -1,4 +1,5 @@
 // Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
+// Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { tick } from "svelte";
 
@@ -13,7 +14,7 @@ vi.mock("../lib/projectStore", async () => {
     selectedLineStore: writable(-1),
     projectSettingsStore: writable({}),
     selectedMacroPathStore: writable(""),
-    fieldDimensions: writable({ width: 144, height: 144 }),
+    fieldDimensions: writable({ width: 188, height: 188 }),
     startPointStore: writable({ x: 0, y: 0 }),
     uiState: writable({}),
     viewportStore: writable({ x: 0, y: 0, zoom: 1 }),

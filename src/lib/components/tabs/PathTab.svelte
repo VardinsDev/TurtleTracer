@@ -460,8 +460,8 @@
     const endPoint: Point = lastLine
       ? makeNewEndPointFrom(lastLine.endPoint)
       : {
-          x: random(0, 144),
-          y: random(0, 144),
+          x: random(0, 188),
+          y: random(0, 188),
           heading: "tangential",
           reverse: false,
         };
@@ -570,8 +570,8 @@
     const endPoint: Point = firstLine
       ? makeNewEndPointFrom(firstLine.endPoint)
       : {
-          x: random(0, 144),
-          y: random(0, 144),
+          x: random(0, 188),
+          y: random(0, 188),
           heading: "tangential",
           reverse: false,
         };

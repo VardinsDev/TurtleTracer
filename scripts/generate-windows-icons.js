@@ -1,4 +1,5 @@
 // Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
+// Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
 /*
 Generates Windows tile assets from `public/icon.png`.
 Uses `sharp` when available, otherwise falls back to the already-installed `canvas` package.

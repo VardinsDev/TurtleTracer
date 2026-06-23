@@ -1,4 +1,5 @@
 // Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
+// Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
 import { describe, it, expect, beforeEach } from "vitest";
 import {
   mirrorPointHeading,
@@ -68,7 +69,7 @@ describe("pathTransform", () => {
         shapes: [],
       };
       const mirrored = mirrorPathData(data);
-      expect(mirrored.startPoint.x).toBe(134); // 144 - 10
+      expect(mirrored.startPoint.x).toBe(134); // 188 - 10
       expect(mirrored.startPoint.y).toBe(20);
       expect(mirrored.startPoint.degrees).toBe(170); // 180 - 10
     });
@@ -97,14 +98,14 @@ describe("pathTransform", () => {
       const mirrored = mirrorPathData(data);
       const line = mirrored.lines[0];
 
-      expect(line.endPoint.x).toBe(124); // 144 - 20
+      expect(line.endPoint.x).toBe(124); // 188 - 20
       expect(line.endPoint.y).toBe(30);
       expect(line.endPoint.startDeg).toBe(180); // 180 - 0
       expect(line.endPoint.endDeg).toBe(90); // 180 - 90
 
-      expect(line.controlPoints[0].x).toBe(139); // 144 - 5
+      expect(line.controlPoints[0].x).toBe(139); // 188 - 5
       expect(line.controlPoints[0].y).toBe(5);
-      expect(line.controlPoints[1].x).toBe(129); // 144 - 15
+      expect(line.controlPoints[1].x).toBe(129); // 188 - 15
       expect(line.controlPoints[1].y).toBe(15);
     });
 
@@ -129,8 +130,8 @@ describe("pathTransform", () => {
       const mirrored = mirrorPathData(data);
       const shape = mirrored.shapes![0];
 
-      expect(shape.vertices[0].x).toBe(134); // 144 - 10
-      expect(shape.vertices[1].x).toBe(124); // 144 - 20
+      expect(shape.vertices[0].x).toBe(134); // 188 - 10
+      expect(shape.vertices[1].x).toBe(124); // 188 - 20
     });
 
     it("should handle missing optional arrays", () => {

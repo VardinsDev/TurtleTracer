@@ -1097,8 +1097,8 @@
       newLine.endPoint.y = line.endPoint.y + dy;
 
       // Clamp to field?
-      newLine.endPoint.x = Math.max(0, Math.min(144, newLine.endPoint.x));
-      newLine.endPoint.y = Math.max(0, Math.min(144, newLine.endPoint.y));
+      newLine.endPoint.x = Math.max(0, Math.min(188, newLine.endPoint.x));
+      newLine.endPoint.y = Math.max(0, Math.min(188, newLine.endPoint.y));
 
       // Adjust control points
       // CP_new = New.Start + (CP_old - Old.Start)
@@ -1106,8 +1106,8 @@
       // Wait, CP is absolute.
       newLine.controlPoints = line.controlPoints.map((cp) => ({
         ...cp,
-        x: Math.max(0, Math.min(144, cp.x + dx)),
-        y: Math.max(0, Math.min(144, cp.y + dy)),
+        x: Math.max(0, Math.min(188, cp.x + dx)),
+        y: Math.max(0, Math.min(188, cp.y + dy)),
       }));
 
       // Insert
@@ -1176,24 +1176,24 @@
       const linRef = refPoint as Extract<Point, { heading: "linear" }>;
       const deg = linRef.endDeg ?? linRef.startDeg ?? 0;
       endPoint = {
-        x: Math.max(0, Math.min(144, (refPoint.x || 0) + 10)),
-        y: Math.max(0, Math.min(144, (refPoint.y || 0) + 10)),
+        x: Math.max(0, Math.min(188, (refPoint.x || 0) + 10)),
+        y: Math.max(0, Math.min(188, (refPoint.y || 0) + 10)),
         heading: "linear",
         startDeg: deg,
         endDeg: deg,
       };
     } else if (refPoint.heading === "constant") {
       endPoint = {
-        x: Math.max(0, Math.min(144, (refPoint.x || 0) + 10)),
-        y: Math.max(0, Math.min(144, (refPoint.y || 0) + 10)),
+        x: Math.max(0, Math.min(188, (refPoint.x || 0) + 10)),
+        y: Math.max(0, Math.min(188, (refPoint.y || 0) + 10)),
         heading: "constant",
         degrees:
           (refPoint as Extract<Point, { heading: "constant" }>).degrees ?? 0,
       };
     } else {
       endPoint = {
-        x: Math.max(0, Math.min(144, (refPoint.x || 0) + 10)),
-        y: Math.max(0, Math.min(144, (refPoint.y || 0) + 10)),
+        x: Math.max(0, Math.min(188, (refPoint.x || 0) + 10)),
+        y: Math.max(0, Math.min(188, (refPoint.y || 0) + 10)),
         heading: "tangential",
         reverse: (refPoint as any).reverse ?? false,
       };

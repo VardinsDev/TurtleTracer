@@ -1,4 +1,5 @@
 // Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
+// Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
 /*
 Simple validation script that ensures required Windows tile assets exist in `build/win/` and match expected sizes.
 Exit code != 0 on failure so CI can catch missing/default tile assets.

@@ -1,4 +1,5 @@
 // Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
+// Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
 import type { Line, Settings, BasePoint } from "../../types";
 import type { PathAnalysis } from "./types";
 import { getCurvePoint } from "../math";

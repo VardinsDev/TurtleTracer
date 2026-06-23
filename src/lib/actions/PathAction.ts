@@ -1,4 +1,5 @@
 // Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
+// Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
 import type { ActionDefinition, InsertionContext } from "../actionRegistry";
 import { makeId, renumberDefaultPathNames } from "../../utils/nameGenerator";
 import { getRandomColor } from "../../utils/draw";
@@ -52,8 +53,8 @@ export const PathAction: ActionDefinition = {
       >;
       const deg = linRef.endDeg ?? linRef.startDeg ?? 0;
       endPoint = {
-        x: Math.max(0, Math.min(144, refPoint.x + 10)),
-        y: Math.max(0, Math.min(144, refPoint.y + 10)),
+        x: Math.max(0, Math.min(188, refPoint.x + 10)),
+        y: Math.max(0, Math.min(188, refPoint.y + 10)),
         heading: "linear",
         startDeg: deg,
         endDeg: deg,
@@ -64,15 +65,15 @@ export const PathAction: ActionDefinition = {
         { heading: "constant" }
       >;
       endPoint = {
-        x: Math.max(0, Math.min(144, refPoint.x + 10)),
-        y: Math.max(0, Math.min(144, refPoint.y + 10)),
+        x: Math.max(0, Math.min(188, refPoint.x + 10)),
+        y: Math.max(0, Math.min(188, refPoint.y + 10)),
         heading: "constant",
         degrees: constRef.degrees ?? 0,
       };
     } else {
       endPoint = {
-        x: Math.max(0, Math.min(144, refPoint.x + 10)),
-        y: Math.max(0, Math.min(144, refPoint.y + 10)),
+        x: Math.max(0, Math.min(188, refPoint.x + 10)),
+        y: Math.max(0, Math.min(188, refPoint.y + 10)),
         heading: "tangential",
         reverse: (refPoint as any).reverse ?? false,
       };

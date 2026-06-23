@@ -1,4 +1,5 @@
 // Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
+// Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
 import type { Point, ControlPoint, Line, Shape, SequenceItem } from "../types";
 
 // Represents a set of data used for path editing operations. Sequence is optional
@@ -29,25 +30,25 @@ export function mirrorPathData(data: PathData) {
   const m = structuredClone(data);
 
   if (m.startPoint) {
-    m.startPoint.x = 144 - m.startPoint.x;
+    m.startPoint.x = 188 - m.startPoint.x;
     m.startPoint = mirrorPointHeading(m.startPoint);
   }
 
   if (m.lines) {
     m.lines.forEach((line: Line) => {
       if (line.endPoint) {
-        line.endPoint.x = 144 - line.endPoint.x;
+        line.endPoint.x = 188 - line.endPoint.x;
         line.endPoint = mirrorPointHeading(line.endPoint);
       }
       if (line.controlPoints) {
-        line.controlPoints.forEach((cp: ControlPoint) => (cp.x = 144 - cp.x));
+        line.controlPoints.forEach((cp: ControlPoint) => (cp.x = 188 - cp.x));
       }
     });
   }
 
   if (m.shapes) {
     m.shapes.forEach((s: Shape) =>
-      s.vertices?.forEach((v: any) => (v.x = 144 - v.x)),
+      s.vertices?.forEach((v: any) => (v.x = 188 - v.x)),
     );
   }
 

@@ -1,4 +1,5 @@
 // Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
+// Copyright 2026 Matthew Allen. Licensed under the Modified Apache License, Version 2.0.
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render } from "@testing-library/svelte";
 import FieldRenderer from "./FieldRenderer.svelte";
@@ -58,8 +59,8 @@ describe("FieldRenderer", () => {
   });
 
   it("tests boundary collision logic via generateCollisionElements", () => {
-    const x = d3.scaleLinear().domain([0, 144]).range([0, 1000]);
-    const y = d3.scaleLinear().domain([0, 144]).range([1000, 0]);
+    const x = d3.scaleLinear().domain([0, 188]).range([0, 1000]);
+    const y = d3.scaleLinear().domain([0, 188]).range([1000, 0]);
     const uiLength = (inches: number) => inches * 10;
 
     const markers = [
@@ -91,7 +92,7 @@ describe("FieldRenderer", () => {
 
   it("validates coordinate mapping from d3 integration as used in FieldRenderer", () => {
     // FieldRenderer uses d3.scaleLinear to map [0, FIELD_SIZE] to the pixel width/height.
-    const FIELD_SIZE = 144;
+    const FIELD_SIZE = 188;
     const width = 1000;
     const height = 1000;
     const baseSize = Math.min(width, height);
@@ -115,11 +116,11 @@ describe("FieldRenderer", () => {
         height / 2 - (baseSize * scaleFactor) / 2 + pan.y,
       ]);
 
-    // 72 is the exact center of a 144 FIELD_SIZE, which should map to the exact center of 1000 width/height
+    // 72 is the exact center of a 188 FIELD_SIZE, which should map to the exact center of 1000 width/height
     expect(x(72)).toBe(500);
     expect(y(72)).toBe(500);
 
-    // 144 is the edge, which should map to 1000 on x-axis
+    // 188 is the edge, which should map to 1000 on x-axis
     expect(x(FIELD_SIZE)).toBe(1000);
     // 0 is the start edge, which should map to 1000 on y-axis (y is inverted visually in rendering)
     expect(y(0)).toBe(1000);
